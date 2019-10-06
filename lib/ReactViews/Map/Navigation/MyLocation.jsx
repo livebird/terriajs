@@ -71,9 +71,7 @@ const MyLocation = createReactClass({
         );
       }
     } else if (this.props.terria.locationService != undefined) {
-      this.props.terria.locationService(function(position) {
-        zoomToMyLocation(position);
-      });
+      this.props.terria.locationService(self.zoomToMyLocation);
     }
   },
 
