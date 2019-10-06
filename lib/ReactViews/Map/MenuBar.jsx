@@ -50,6 +50,7 @@ const MenuBar = createReactClass({
   },
   render() {
     const storyEnabled = this.props.terria.configParameters.storyEnabled;
+    const shareEnabled = this.props.terria.configParameters.shareEnabled;
     const enableTools = this.props.terria.getUserProperty("tools") === "1";
     const promptHtml =
       this.props.terria.stories.length > 0 ? (
@@ -102,12 +103,14 @@ const MenuBar = createReactClass({
               viewState={this.props.viewState}
             />
           </li>
-          <li className={Styles.menuItem}>
-            <SharePanel
-              terria={this.props.terria}
-              viewState={this.props.viewState}
-            />
-          </li>
+          <If condition={shareEnabled}>
+            <li className={Styles.menuItem}>
+              <SharePanel
+                terria={this.props.terria}
+                viewState={this.props.viewState}
+              />
+            </li>
+          </If>
           {enableTools && (
             <li className={Styles.menuItem}>
               <ToolsPanel
