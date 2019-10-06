@@ -35,37 +35,43 @@ const MyLocation = createReactClass({
   },
 
   getLocation() {
-    if (navigator.geolocation) {
-      const options = {
-        enableHighAccuracy: true,
-        timeout: 5000,
-        maximumAge: 0
-      };
-      if (!this.augmentedVirtualityEnabled()) {
-        // When Augmented Virtuality is not enabled then just get a single position update.
-        navigator.geolocation.getCurrentPosition(
-          this.zoomToMyLocation,
-          this.handleLocationError,
-          options
-        );
-      } else {
-        // When Augmented Virtuality is enabled then we effectively toggle into watch mode and the position is repeatedly updated.
-        const watchId = navigator.geolocation.watchPosition(
-          this.zoomToMyLocation,
-          this.handleLocationError,
-          options
-        );
+    const useJSNavigator = this.props.terria.configParameters.useJSNavigator;
 
-        this.setState({ watchId: watchId });
+    if (useJSNavigator) {
+      if (navigator.geolocation) {
+        const options = {
+          enableHighAccuracy: true,
+          timeout: 5000,
+          maximumAge: 0
+        };
+        if (!this.augmentedVirtualityEnabled()) {
+          // When Augmented Virtuality is not enabled then just get a single position update.
+          navigator.geolocation.getCurrentPosition(
+            this.zoomToMyLocation,
+            this.handleLocationError,
+            options
+          );
+        } else {
+          // When Augmented Virtuality is enabled then we effectively toggle into watch mode and the position is repeatedly updated.
+          const watchId = navigator.geolocation.watchPosition(
+            this.zoomToMyLocation,
+            this.handleLocationError,
+            options
+          );
+
+          this.setState({ watchId: watchId });
+        }
+      } else {
+        this.props.terria.error.raiseEvent(
+          new TerriaError({
+            sender: this,
+            title: "Error getting location",
+            message: "Your browser cannot provide your location."
+          })
+        );
       }
-    } else {
-      this.props.terria.error.raiseEvent(
-        new TerriaError({
-          sender: this,
-          title: "Error getting location",
-          message: "Your browser cannot provide your location."
-        })
-      );
+    } else if (this.props.terria.locationService != undefined) {
+      this.props.terria.locationService(zoomToMyLocation);
     }
   },
 
