@@ -103,6 +103,7 @@ const SidePanel = createReactClass({
           />
           <div className={Styles.addData}>
             <button
+              id="btnAddData"
               type="button"
               onClick={this.onAddDataClicked}
               className={Styles.button}
