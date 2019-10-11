@@ -146,6 +146,7 @@ const MobileHeader = createReactClass({
               </div>
               <div className={Styles.groupRight}>
                 <button
+                  id="btnAddData"
                   type="button"
                   className={Styles.btnAdd}
                   onClick={this.onMobileDataCatalogClicked}

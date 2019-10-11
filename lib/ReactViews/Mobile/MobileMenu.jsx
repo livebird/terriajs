@@ -59,6 +59,7 @@ const MobileMenu = createReactClass({
   },
 
   render() {
+    const shareEnabled = this.props.terria.configParameters.shareEnabled;
     const hasStories =
       this.props.terria.configParameters.storyEnabled &&
       defined(this.props.terria.stories) &&
@@ -81,12 +82,14 @@ const MobileMenu = createReactClass({
               viewState={this.props.viewState}
             />
           </div>
-          <div onClick={this.hideMenu}>
-            <SharePanel
-              terria={this.props.terria}
-              viewState={this.props.viewState}
-            />
-          </div>
+          <If condition={shareEnabled}>
+            <div onClick={this.hideMenu}>
+              <SharePanel
+                terria={this.props.terria}
+                viewState={this.props.viewState}
+              />
+            </div>
+          </If>
           <For each="menuItem" of={this.props.menuItems}>
             <div onClick={this.hideMenu} key={menuItem.key}>
               {menuItem}
